@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_timeline"
+            android:icon="@drawable/ic_articles_black_24dp"
+            android:title="文章"></item>
+        <item
+            android:id="@+id/nav_category"
+            android:icon="@drawable/ic_art_categories_black_24dp"
+            android:title="分类"></item>
+        <item
+            android:id="@+id/nav_todo"
+            android:icon="@drawable/ic_todo_o"
+            android:title="笔记"></item>
+        <item
+            android:id="@+id/nav_about"
+            android:icon="@drawable/ic_about_black_24dp"
+            android:title="关于"></item>
+    </group>
+
+</menu>

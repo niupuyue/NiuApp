@@ -25,4 +25,9 @@
         <item name="android:statusBarColor" tools:ignore="NewApi">@color/colorPrimary</item>
     </style>
 
+    <!--toolbar样式-->
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"></style>
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"></style>
+
 </resources>

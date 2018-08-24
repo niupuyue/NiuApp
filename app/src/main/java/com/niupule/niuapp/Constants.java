@@ -12,4 +12,7 @@ public class Constants {
     //是否第一次启动应用程序
     public static final String KEY_FIRST_TIME = "first_time";
 
+    //本地缓存用户名称
+    public static final String KEY_USERNAME = "username";
+
 }

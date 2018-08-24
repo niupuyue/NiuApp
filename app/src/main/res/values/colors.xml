@@ -23,4 +23,6 @@
 
 
     <color name="web_view_dark_color">#303030</color>
+
+    <color name="colorNavItemUnselected">#a5a5a5</color>
 </resources>

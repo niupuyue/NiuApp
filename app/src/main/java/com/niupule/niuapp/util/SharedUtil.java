@@ -36,4 +36,14 @@ public class SharedUtil {
         shared.edit().putBoolean(Constants.KEY_FIRST_TIME,flag).apply();
     }
 
+
+    //存储用户名称
+    public void setUsername(String  username){
+        shared.edit().putString(Constants.KEY_USERNAME,username).apply();
+    }
+    //获取用户名称
+    public String getUsername(){
+        return shared.getString(Constants.KEY_USERNAME,"");
+    }
+
 }
