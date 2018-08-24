@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">NiuApp</string>
+
+    <!--welcome page-->
+    <string name="welcome_pre">pre</string>
+    <string name="welcome_next">next</string>
+    <string name="welcome_finish">finish</string>
+</resources>
