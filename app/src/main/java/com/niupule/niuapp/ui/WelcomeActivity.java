@@ -12,6 +12,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import com.niupule.niuapp.R;
+import com.niupule.niuapp.mvp.login.LoginActivity;
 import com.niupule.niuapp.util.SharedUtil;
 
 /**
