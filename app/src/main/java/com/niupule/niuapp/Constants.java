@@ -14,5 +14,14 @@ public class Constants {
 
     //本地缓存用户名称
     public static final String KEY_USERNAME = "username";
+    //本地缓存用户密码
+    public static final String KEY_PASSWORD = "password";
+    //本地缓存用户头像
+    public static final String KEY_ICON = "icon";
+    //本地缓存用户id
+    public static final String KEY_ID = "id";
+
+    //设置是否跳过登录页面
+    public static final String KEY_SKIP_LOGIN_PAGE = "skiploginpage";
 
 }

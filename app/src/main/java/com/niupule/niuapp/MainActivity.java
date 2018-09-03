@@ -42,16 +42,16 @@ public class MainActivity extends AppCompatActivity {
             //不是第一次使用
             int selectedId = savedInstanceState.getInt(KEY_BOTTOM_NAVIGATION_SELECTED_ITEM);
             switch (selectedId) {
-                case 0:
+                case R.id.nav_timeline:
                     showFragment(timeLineFragment);
                     break;
-                case 1:
+                case R.id.nav_category:
                     showFragment(categoryFragment);
                     break;
-                case 2:
+                case R.id.nav_todo:
                     showFragment(todoFragment);
                     break;
-                case 3:
+                case R.id.nav_about:
                     showFragment(aboutFragment);
                     break;
                 default:
@@ -92,48 +92,49 @@ public class MainActivity extends AppCompatActivity {
     /**
      * 初始话Fragments对象
      */
-    protected void initFragments(Bundle savedInstanceState){
+    protected void initFragments(Bundle savedInstanceState) {
         FragmentManager manager = getSupportFragmentManager();
-        if(savedInstanceState != null){
-            timeLineFragment = (TimeLineFragment) manager.getFragment(savedInstanceState,TimeLineFragment.class.getSimpleName());
-            categoryFragment = (CategoryFragment) manager.getFragment(savedInstanceState,CategoryFragment.class.getSimpleName());
-            todoFragment = (TodoFragment) manager.getFragment(savedInstanceState,TodoFragment.class.getSimpleName());
-            aboutFragment = (AboutFragment) manager.getFragment(savedInstanceState,AboutFragment.class.getSimpleName());
-        }else {
+        if (savedInstanceState != null) {
+            timeLineFragment = (TimeLineFragment) manager.getFragment(savedInstanceState, TimeLineFragment.class.getSimpleName());
+            categoryFragment = (CategoryFragment) manager.getFragment(savedInstanceState, CategoryFragment.class.getSimpleName());
+            todoFragment = (TodoFragment) manager.getFragment(savedInstanceState, TodoFragment.class.getSimpleName());
+            aboutFragment = (AboutFragment) manager.getFragment(savedInstanceState, AboutFragment.class.getSimpleName());
+        } else {
             timeLineFragment = TimeLineFragment.newInstance();
             categoryFragment = CategoryFragment.newInstance();
             todoFragment = TodoFragment.newInstance();
             aboutFragment = AboutFragment.newInstance();
         }
-        if (!timeLineFragment.isAdded()){
+        if (!timeLineFragment.isAdded()) {
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.frame_layout,timeLineFragment,TimeLineFragment.class.getSimpleName())
+                    .add(R.id.frame_layout, timeLineFragment, TimeLineFragment.class.getSimpleName())
                     .commit();
         }
-        if (!categoryFragment.isAdded()){
+        if (!categoryFragment.isAdded()) {
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.frame_layout,categoryFragment,CategoryFragment.class.getSimpleName())
+                    .add(R.id.frame_layout, categoryFragment, CategoryFragment.class.getSimpleName())
                     .commit();
         }
-        if (!todoFragment.isAdded()){
+        if (!todoFragment.isAdded()) {
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.frame_layout,todoFragment,TodoFragment.class.getSimpleName())
+                    .add(R.id.frame_layout, todoFragment, TodoFragment.class.getSimpleName())
                     .commit();
         }
-        if (!aboutFragment.isAdded()){
+        if (!aboutFragment.isAdded()) {
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.frame_layout,aboutFragment,AboutFragment.class.getSimpleName())
+                    .add(R.id.frame_layout, aboutFragment, AboutFragment.class.getSimpleName())
                     .commit();
         }
     }
 
     /**
      * 展示fragment
+     *
      * @param fragment
      */
-    protected void showFragment(Fragment fragment){
+    protected void showFragment(Fragment fragment) {
         FragmentManager manager = getSupportFragmentManager();
-        if (fragment instanceof TimeLineFragment){
+        if (fragment instanceof TimeLineFragment) {
             manager.beginTransaction()
                     .show(timeLineFragment)
                     .hide(categoryFragment)
@@ -142,7 +143,7 @@ public class MainActivity extends AppCompatActivity {
                     .commit();
             setTitle("文章");
         }
-        if (fragment instanceof CategoryFragment){
+        if (fragment instanceof CategoryFragment) {
             manager.beginTransaction()
                     .show(categoryFragment)
                     .hide(timeLineFragment)
@@ -151,7 +152,7 @@ public class MainActivity extends AppCompatActivity {
                     .commit();
             setTitle("分类");
         }
-        if (fragment instanceof TodoFragment){
+        if (fragment instanceof TodoFragment) {
             manager.beginTransaction()
                     .show(todoFragment)
                     .hide(timeLineFragment)
@@ -160,7 +161,7 @@ public class MainActivity extends AppCompatActivity {
                     .commit();
             setTitle("笔记");
         }
-        if (fragment instanceof AboutFragment){
+        if (fragment instanceof AboutFragment) {
             manager.beginTransaction()
                     .show(aboutFragment)
                     .hide(timeLineFragment)

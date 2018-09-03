@@ -16,6 +16,7 @@ import com.niupule.niuapp.mvp.timeline.article.ArticleFragment;
 import com.niupule.niuapp.mvp.timeline.favorites.FavoritesFragment;
 import com.niupule.niuapp.mvp.timeline.readlater.ReadLaterFragment;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -54,6 +55,7 @@ public class TimeLineFragment extends Fragment {
             favoritesFragment = FavoritesFragment.newInstance();
             readLaterFragment = ReadLaterFragment.newInstance();
         }
+        fragments = new ArrayList<>();
         fragments.add(articleFragment);
         fragments.add(favoritesFragment);
         fragments.add(readLaterFragment);

@@ -46,4 +46,40 @@ public class SharedUtil {
         return shared.getString(Constants.KEY_USERNAME,"");
     }
 
+    //存储用户id
+    public void setUserId(int userId){
+        shared.edit().putInt(Constants.KEY_ID,userId).apply();
+    }
+    //获取用户id
+    public int getUserId(){
+        return shared.getInt(Constants.KEY_ID,-1);
+    }
+
+    //获取用户头像
+    public String getIcon(){
+        return shared.getString(Constants.KEY_ICON,"");
+    }
+    //设置用户头像
+    public void setIcon(String icon){
+        shared.edit().putString(Constants.KEY_ICON,icon).apply();
+    }
+
+    //设置用户密码
+    public void setPassword(String password){
+        shared.edit().putString(Constants.KEY_PASSWORD,password).apply();
+    }
+    //获取用户密码
+    public String getPassword(){
+        return shared.getString(Constants.KEY_PASSWORD,"");
+    }
+
+    //设置是否需要跳过登录页面
+    public void setSkipLogin(boolean flag){
+        shared.edit().putBoolean(Constants.KEY_SKIP_LOGIN_PAGE,flag).apply();
+    }
+    //获取是否需要跳过登录页面
+    public boolean getSkipLogin(){
+        return shared.getBoolean(Constants.KEY_SKIP_LOGIN_PAGE,false);
+    }
+
 }

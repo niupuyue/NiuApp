@@ -6,6 +6,9 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 
 import com.niupule.niuapp.R;
+import com.niupule.niuapp.data.source.LoginDataRepository;
+import com.niupule.niuapp.data.source.local.LoginDataLocalSource;
+import com.niupule.niuapp.data.source.local.LoginDataRemoteSource;
 
 /**
  * Coder: niupuyue (牛谱乐)
@@ -45,7 +48,9 @@ public class LoginActivity extends AppCompatActivity {
                     .add(R.id.container, signUpFragment, SignUpFragment.class.getSimpleName())
                     .commit();
         }
-
+        new LoginPresenter(loginFragment, LoginDataRepository.getInstance(
+                LoginDataLocalSource.getInstance(), LoginDataRemoteSource.getInstance()
+        ));
 
         showLoginFragment();
     }

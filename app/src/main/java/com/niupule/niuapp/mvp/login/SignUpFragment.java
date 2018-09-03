@@ -34,7 +34,7 @@ public class SignUpFragment extends Fragment {
     private TextView gotoLogin;
     private AppCompatButton signup_btn;
 
-    public static SignUpFragment newInstance(){
+    public static SignUpFragment newInstance() {
         SignUpFragment fragment = new SignUpFragment();
         return fragment;
     }
@@ -42,7 +42,7 @@ public class SignUpFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_signup,container,false);
+        View root = inflater.inflate(R.layout.fragment_signup, container, false);
         initView(root);
         gotoLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,7 +57,7 @@ public class SignUpFragment extends Fragment {
                 String name = username.getText().toString();
                 String pwd = password.getText().toString();
                 String repwd = repassword.getText().toString();
-                if(checkValid(name,pwd,repwd) ){
+                if (checkValid(name, pwd, repwd)) {
                     //执行注册操作
                 }
             }
@@ -65,7 +65,7 @@ public class SignUpFragment extends Fragment {
         return root;
     }
 
-    protected void initView(View root){
+    protected void initView(View root) {
         username = root.findViewById(R.id.signup_username);
         password = root.findViewById(R.id.signup_password);
         repassword = root.findViewById(R.id.sign_repassword);
@@ -73,10 +73,10 @@ public class SignUpFragment extends Fragment {
         signup_btn = root.findViewById(R.id.signup_btn);
     }
 
-    protected boolean checkValid(String name,String pwd,String repwd){
+    protected boolean checkValid(String name, String pwd, String repwd) {
         boolean flag = true;
-        if(StringUtil.isInvalid(name) || StringUtil.isInvalid(pwd) || StringUtil.isInvalid(repwd) || !pwd.equals(repwd)){
-            Snackbar.make(gotoLogin,"注册填写信息失败，请重新填写",Snackbar.LENGTH_SHORT).show();
+        if (StringUtil.isInvalid(name) || StringUtil.isInvalid(pwd) || StringUtil.isInvalid(repwd) || !pwd.equals(repwd)) {
+            Snackbar.make(gotoLogin, "注册填写信息失败，请重新填写", Snackbar.LENGTH_SHORT).show();
             username.setText("");
             password.setText("");
             repassword.setText("");
@@ -85,7 +85,7 @@ public class SignUpFragment extends Fragment {
         return flag;
     }
 
-    protected void gotMain(){
+    protected void gotMain() {
         //注册成功直接跳转到主页面
         Intent intent = new Intent(getContext(), MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

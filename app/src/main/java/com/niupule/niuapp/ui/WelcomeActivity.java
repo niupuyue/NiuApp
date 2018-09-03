@@ -37,11 +37,10 @@ public class WelcomeActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
-
+        initView();
+        initData();
         //判断是否是第一次启动应用程序
         if (SharedUtil.getInstance().isFirstTime()) {
-            initView();
-            initData();
 
             welcome_viewpager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
                 @Override

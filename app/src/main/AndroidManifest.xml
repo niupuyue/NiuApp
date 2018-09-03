@@ -34,6 +34,10 @@
             android:name=".mvp.login.LoginActivity"
             android:noHistory="true"
             android:theme="@style/AppTheme.InputStyle"></activity>
+        <activity android:name=".mvp.search.SearchActivity"></activity>
+        <activity android:name=".mvp.detail.DetailActivity"
+            android:label="@string/search_label"
+            android:theme="@style/AppTheme.NoActionBarPlus"></activity>
     </application>
 
 </manifest>

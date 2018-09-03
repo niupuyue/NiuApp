@@ -12,9 +12,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.niupule.niuapp.MainActivity;
 import com.niupule.niuapp.R;
+import com.niupule.niuapp.data.detail.LoginDetailData;
+import com.niupule.niuapp.data.type.LoginType;
+import com.niupule.niuapp.util.SharedUtil;
 import com.niupule.niuapp.util.StringUtil;
 
 /**
@@ -24,12 +28,14 @@ import com.niupule.niuapp.util.StringUtil;
  * Desc:
  * Version:
  */
-public class LoginFragment extends Fragment {
+public class LoginFragment extends Fragment implements LoginContract.LoginView {
 
     private TextInputEditText username;
     private TextInputEditText password;
     private AppCompatButton login_btn;
     private TextView gotoSignUp;
+
+    private LoginContract.LoginPresenter presenter;
 
     public LoginFragment() {
 
@@ -38,6 +44,14 @@ public class LoginFragment extends Fragment {
     public static LoginFragment newInstance() {
         LoginFragment fragment = new LoginFragment();
         return fragment;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (SharedUtil.getInstance().getSkipLogin()){
+            gotoMain();
+        }
     }
 
     @Nullable
@@ -53,6 +67,7 @@ public class LoginFragment extends Fragment {
                 String pwd = password.getText().toString();
                 if (checkValid(name, pwd)) {
                     //执行
+                    presenter.login(name,pwd, LoginType.TYPE_LOGIN);
                 }
             }
         });
@@ -91,4 +106,55 @@ public class LoginFragment extends Fragment {
         getActivity().startActivity(intent);
     }
 
+    @Override
+    public void showLoginError(String error) {
+        Snackbar.make(gotoSignUp, error, Snackbar.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public boolean isActive() {
+        return isAdded() && isResumed();
+    }
+
+    @Override
+    public void saveUserInfo2Predference(LoginDetailData loginDetailData) {
+        //将数据保存到本地
+        int userId = loginDetailData.getId();
+        String username = loginDetailData.getUsername();
+        String password = loginDetailData.getPassword();
+        String icon = loginDetailData.getIcon();
+        int oldId = SharedUtil.getInstance().getUserId();
+        if (oldId != -1 && userId != oldId) {
+            //清空之前的登录信息
+            presenter.clearReaderLaterData();
+        }
+        SharedUtil.getInstance().setIcon(icon);
+        SharedUtil.getInstance().setUserId(userId);
+        SharedUtil.getInstance().setUsername(username);
+        SharedUtil.getInstance().setPassword(password);
+        SharedUtil.getInstance().setSkipLogin(true);
+        gotoMain();
+    }
+
+    @Override
+    public void showNetworkError() {
+        Toast.makeText(getContext(), "网络连接失败", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void setPresenter(LoginContract.LoginPresenter presenter) {
+        this.presenter = presenter;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        presenter.subscribe();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        presenter.unsubscribe();
+    }
 }

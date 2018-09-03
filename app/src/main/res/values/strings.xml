@@ -1,8 +1,10 @@
 <resources>
-    <string name="app_name">NiuApp</string>
+    <string name="app_name">牛爱扑</string>
 
     <!--welcome page-->
     <string name="welcome_pre">pre</string>
     <string name="welcome_next">next</string>
     <string name="welcome_finish">finish</string>
+
+    <string name="search_label">搜索</string>
 </resources>
