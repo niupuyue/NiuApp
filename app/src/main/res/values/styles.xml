@@ -20,6 +20,11 @@
         <item name="android:statusBarColor" tools:targetApi="lollipop">@color/colorPrimary</item>
     </style>
 
+    <!--欢迎页面-->
+    <style name="AppTheme.Welcome" parent="AppTheme.NoActionBar">
+        <item name="android:statusBarColor" tools:ignore="NewApi">@color/transparent_black</item>
+        <item name="android:windowTranslucentStatus" tools:ignore="NewApi">true</item>
+    </style>
 
     <!--登录页面输入框样式-->
     <style name="AppTheme.InputStyle" parent="AppTheme.NoActionBar">

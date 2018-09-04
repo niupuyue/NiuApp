@@ -12,6 +12,13 @@ import android.support.v7.app.AppCompatActivity;
  * Version:
  */
 public class DetailActivity extends AppCompatActivity {
+
+    public static final String ID = "ID";
+    public static final String URL = "URL";
+    public static final String TITLE = "TITLE";
+    public static final String FROM_FAVORITE_FRAGMENT = "FROM_FAVORITE_FRAGMENT";
+    public static final String FROM_BANNER = "FROM_BANNER";
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

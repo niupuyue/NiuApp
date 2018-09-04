@@ -7,4 +7,7 @@
     <string name="welcome_finish">finish</string>
 
     <string name="search_label">搜索</string>
+    <string name="search_tint">搜索内容</string>
+
+    <string name="empty_text">空空如也</string>
 </resources>

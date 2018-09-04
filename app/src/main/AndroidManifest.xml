@@ -18,7 +18,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.WelcomeActivity">
+        <activity
+            android:name=".ui.WelcomeActivity"
+            android:theme="@style/AppTheme.Welcome">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -34,8 +36,11 @@
             android:name=".mvp.login.LoginActivity"
             android:noHistory="true"
             android:theme="@style/AppTheme.InputStyle"></activity>
-        <activity android:name=".mvp.search.SearchActivity"></activity>
-        <activity android:name=".mvp.detail.DetailActivity"
+        <activity
+            android:name=".mvp.search.SearchActivity"
+            android:theme="@style/AppTheme.NoActionBarPlus"></activity>
+        <activity
+            android:name=".mvp.detail.DetailActivity"
             android:label="@string/search_label"
             android:theme="@style/AppTheme.NoActionBarPlus"></activity>
     </application>

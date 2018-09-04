@@ -11,12 +11,28 @@ import android.text.TextUtils;
  */
 public class StringUtil {
 
-    public static boolean isInvalid(String ss){
+    /**
+     * 判断字符串是否有效
+     *
+     * @param ss
+     * @return
+     */
+    public static boolean isInvalid(String ss) {
         boolean flag = false;
-        if(TextUtils.isEmpty(ss)||ss.contains(" ")){
+        if (TextUtils.isEmpty(ss) || ss.contains(" ")) {
             flag = true;
         }
         return false;
+    }
+
+    public static String replaceInvalidChar(String ss) {
+        return ss.replace("<em class='highlight'>", "")
+                .replace("</em>", "")
+                .replace("&mdash;", "-")
+                .replace("&ndash;", "-")
+                .replace("&ldquo;", "'")
+                .replace("&rdquo;", "'")
+                .replace("&amp;", "&");
     }
 
 }
