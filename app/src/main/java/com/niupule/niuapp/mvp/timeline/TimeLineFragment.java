@@ -59,6 +59,9 @@ public class TimeLineFragment extends Fragment {
         fragments.add(articleFragment);
         fragments.add(favoritesFragment);
         fragments.add(readLaterFragment);
+
+
+
     }
 
     @Nullable
