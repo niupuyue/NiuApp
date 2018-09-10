@@ -12,9 +12,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.niupule.niuapp.MainActivity;
 import com.niupule.niuapp.R;
+import com.niupule.niuapp.data.detail.LoginDetailData;
+import com.niupule.niuapp.data.type.LoginType;
+import com.niupule.niuapp.util.SharedUtil;
 import com.niupule.niuapp.util.StringUtil;
 
 import org.w3c.dom.Text;
@@ -26,13 +30,15 @@ import org.w3c.dom.Text;
  * Desc:
  * Version:
  */
-public class SignUpFragment extends Fragment {
+public class SignUpFragment extends Fragment implements LoginContract.LoginView {
 
     private TextInputEditText username;
     private TextInputEditText password;
     private TextInputEditText repassword;
     private TextView gotoLogin;
     private AppCompatButton signup_btn;
+
+    private LoginContract.LoginPresenter presenter;
 
     public static SignUpFragment newInstance() {
         SignUpFragment fragment = new SignUpFragment();
@@ -59,6 +65,7 @@ public class SignUpFragment extends Fragment {
                 String repwd = repassword.getText().toString();
                 if (checkValid(name, pwd, repwd)) {
                     //执行注册操作
+                    presenter.login(name, pwd, LoginType.TYPE_REGIST);
                 }
             }
         });
@@ -92,4 +99,37 @@ public class SignUpFragment extends Fragment {
         getActivity().startActivity(intent);
     }
 
+    @Override
+    public void showLoginError(String error) {
+        Snackbar.make(gotoLogin, "注册失败", Snackbar.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public boolean isActive() {
+        return isAdded() && isResumed();
+    }
+
+    @Override
+    public void saveUserInfo2Predference(LoginDetailData loginDetailData) {
+        int userId = loginDetailData.getId();
+        String username = loginDetailData.getUsername();
+        String password = loginDetailData.getPassword();
+        String icon = loginDetailData.getIcon();
+        SharedUtil.getInstance().setIcon(icon);
+        SharedUtil.getInstance().setUserId(userId);
+        SharedUtil.getInstance().setUsername(username);
+        SharedUtil.getInstance().setPassword(password);
+        SharedUtil.getInstance().setSkipLogin(true);
+        gotMain();
+    }
+
+    @Override
+    public void showNetworkError() {
+        Toast.makeText(getContext(), "网络连接失败", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void setPresenter(LoginContract.LoginPresenter presenter) {
+        this.presenter = presenter;
+    }
 }

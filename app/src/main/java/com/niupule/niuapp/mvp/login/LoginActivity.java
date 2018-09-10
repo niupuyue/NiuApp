@@ -52,6 +52,10 @@ public class LoginActivity extends AppCompatActivity {
                 LoginDataLocalSource.getInstance(), LoginDataRemoteSource.getInstance()
         ));
 
+        new LoginPresenter(signUpFragment, LoginDataRepository.getInstance(
+                LoginDataLocalSource.getInstance(), LoginDataRemoteSource.getInstance()
+        ));
+
         showLoginFragment();
     }
 
