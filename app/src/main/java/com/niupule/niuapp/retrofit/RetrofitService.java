@@ -1,6 +1,8 @@
 package com.niupule.niuapp.retrofit;
 
 import com.niupule.niuapp.data.detail.ArticleData;
+import com.niupule.niuapp.data.detail.BannerData;
+import com.niupule.niuapp.data.detail.BannerDetailData;
 import com.niupule.niuapp.data.detail.HotKeyDetailData;
 import com.niupule.niuapp.data.detail.HotKeysData;
 import com.niupule.niuapp.data.detail.LoginData;
@@ -41,5 +43,8 @@ public interface RetrofitService {
 
     @GET(Api.ARTICLE_LIST+"{page}/json")
     Observable<ArticleData> getArticleFromCateg(@Path("page") int page,@Query("cid") int cid);
+
+    @GET(Api.BANNER)
+    Observable<BannerData> getBanner();
 
 }

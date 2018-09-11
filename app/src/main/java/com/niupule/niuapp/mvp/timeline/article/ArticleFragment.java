@@ -1,6 +1,7 @@
 package com.niupule.niuapp.mvp.timeline.article;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -21,11 +22,19 @@ import com.niupule.niuapp.MainActivity;
 import com.niupule.niuapp.R;
 import com.niupule.niuapp.data.detail.ArticleDetailData;
 import com.niupule.niuapp.data.detail.BannerDetailData;
+import com.niupule.niuapp.glide.GlideLoader;
+import com.niupule.niuapp.interfaze.OnCategoryOnClickListener;
+import com.niupule.niuapp.interfaze.OnRecycleViewItemClick;
 import com.niupule.niuapp.mvp.adapter.ArticlesAdapter;
+import com.niupule.niuapp.mvp.detail.DetailActivity;
 import com.niupule.niuapp.util.NetworkUtil;
 import com.niupule.niuapp.util.SharedUtil;
 import com.youth.banner.Banner;
+import com.youth.banner.BannerConfig;
+import com.youth.banner.Transformer;
+import com.youth.banner.listener.OnBannerListener;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -96,7 +105,7 @@ public class ArticleFragment extends Fragment implements ArticlesContract.Articl
             currentPage = INDEX;
             firstLoading = false;
         } else {
-            presenter.getArticles(currentPage, true, true);
+            presenter.getArticles(currentPage, false, false);
         }
         if (banner != null) {
             banner.startAutoPlay();
@@ -127,6 +136,8 @@ public class ArticleFragment extends Fragment implements ArticlesContract.Articl
     }
 
     protected void initView(View root) {
+        banner = (Banner) getActivity().getLayoutInflater().inflate(R.layout.container_banner, null);
+        banner.setLayoutParams(new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, getContext().getResources().getDisplayMetrics().heightPixels / 4));
         nestedScrollView = root.findViewById(R.id.articles_nested_scrollview);
         recyclerView = root.findViewById(R.id.articles_recycler_view);
         empty_layout = root.findViewById(R.id.articles_empty_view);
@@ -154,13 +165,44 @@ public class ArticleFragment extends Fragment implements ArticlesContract.Articl
     }
 
     @Override
-    public void setLoadingIndicator(boolean isActive) {
-
+    public void setLoadingIndicator(final boolean isActive) {
+        swipeRefreshLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                swipeRefreshLayout.setRefreshing(isActive);
+            }
+        });
     }
 
     @Override
-    public void showArticles(List<ArticleDetailData> list) {
-
+    public void showArticles(final List<ArticleDetailData> list) {
+        if (articlesAdapter != null) {
+            articlesAdapter.updateData(list);
+        } else {
+            articlesAdapter = new ArticlesAdapter(getContext(), list);
+            articlesAdapter.setCategoryOnClickListener(new OnCategoryOnClickListener() {
+                @Override
+                public void onItemClick(View view, int position) {
+                    //跳转到分类列表
+//                    Intent intent = new Intent();
+                }
+            });
+            articlesAdapter.setArticlesItemClickListener(new OnRecycleViewItemClick() {
+                @Override
+                public void onItemClick(View view, int position) {
+                    Intent intent = new Intent(getContext(), DetailActivity.class);
+                    ArticleDetailData data = list.get(position);
+                    intent.putExtra(DetailActivity.URL, data.getLink());
+                    intent.putExtra(DetailActivity.TITLE, data.getTitle());
+                    intent.putExtra(DetailActivity.ID, data.getId());
+                    intent.putExtra(DetailActivity.FROM_FAVORITE_FRAGMENT, false);
+                    intent.putExtra(DetailActivity.FROM_BANNER, false);
+                    startActivity(intent);
+                }
+            });
+            articlesAdapter.setHeaderView(banner);
+            recyclerView.setAdapter(articlesAdapter);
+        }
     }
 
     @Override
@@ -170,8 +212,31 @@ public class ArticleFragment extends Fragment implements ArticlesContract.Articl
     }
 
     @Override
-    public void showBannder(List<BannerDetailData> list) {
-
+    public void showBannder(final List<BannerDetailData> list) {
+        List<String> urls = new ArrayList<>();
+        for (BannerDetailData item : list) {
+            urls.add(item.getUrl());
+        }
+        banner.setImages(urls);
+        banner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR);
+        banner.setImageLoader(new GlideLoader());
+        banner.setBannerAnimation(Transformer.ZoomOutSlide);
+        banner.isAutoPlay(true);
+        banner.setDelayTime(7800);
+        banner.setOnBannerListener(new OnBannerListener() {
+            @Override
+            public void OnBannerClick(int position) {
+                Intent intent = new Intent(getContext(), DetailActivity.class);
+                BannerDetailData data = list.get(position);
+                intent.putExtra(DetailActivity.URL, data.getUrl());
+                intent.putExtra(DetailActivity.ID, data.getId());
+                intent.putExtra(DetailActivity.TITLE, data.getTitle());
+                intent.putExtra(DetailActivity.FROM_FAVORITE_FRAGMENT, false);
+                intent.putExtra(DetailActivity.FROM_BANNER, true);
+                startActivity(intent);
+            }
+        });
+        banner.start();
     }
 
     @Override

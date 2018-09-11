@@ -66,7 +66,7 @@ public class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.Articl
     @Override
     public ArticlesViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         if (viewType == HEAD_VIEW) {
-            return new ArticlesViewHolder(headerView, this.recycleViewItemClick, this.categoryOnClickListener);
+            return new ArticlesViewHolder(headerView, null, null);
         }
         View view = inflater.inflate(R.layout.item_articles, parent, false);
         return new ArticlesViewHolder(view, this.recycleViewItemClick, this.categoryOnClickListener);
@@ -74,7 +74,7 @@ public class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.Articl
 
     @Override
     public void onBindViewHolder(@NonNull ArticlesViewHolder holder, int position) {
-        if (getItemViewType(position) == HEAD_VIEW){
+        if (getItemViewType(position) == HEAD_VIEW) {
             return;
         }
         ArticlesViewHolder viewHolder = holder;
@@ -82,21 +82,22 @@ public class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.Articl
         viewHolder.author.setText(data.getAuthor());
         viewHolder.title.setText(data.getTitle());
         viewHolder.time.setText(data.getNiceDate());
-        viewHolder.btnCategory.setText(" "+data.getChapterName()+" ");
+        viewHolder.btnCategory.setText(" " + data.getChapterName() + " ");
     }
 
     @Override
     public int getItemCount() {
-        return this.data.size()+1;
+        return this.data.size() + 1;
     }
 
     @Override
     public int getItemViewType(int position) {
-
-        return super.getItemViewType(position);
+        if (headerView == null) return NORMAL_VIEW;
+        if (position == 0) return HEAD_VIEW;
+        return NORMAL_VIEW;
     }
 
-    public void setHeaderView(View headerView){
+    public void setHeaderView(View headerView) {
         this.headerView = headerView;
         notifyItemInserted(0);
     }
@@ -120,6 +121,9 @@ public class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.Articl
 
         public ArticlesViewHolder(View itemView, OnRecycleViewItemClick recycleViewItemClick, OnCategoryOnClickListener categoryOnClickListener) {
             super(itemView);
+            if (itemView == headerView) {
+                return;
+            }
             this.recycleViewItemClick = recycleViewItemClick;
             this.categoryOnClickListener = categoryOnClickListener;
             btnCategory = itemView.findViewById(R.id.item_articles_category);

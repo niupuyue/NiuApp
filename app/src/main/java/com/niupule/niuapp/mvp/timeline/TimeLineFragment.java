@@ -12,7 +12,15 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.niupule.niuapp.R;
+import com.niupule.niuapp.data.source.ArticleDataRepository;
+import com.niupule.niuapp.data.source.BannerDataRepository;
+import com.niupule.niuapp.data.source.LoginDataRepository;
+import com.niupule.niuapp.data.source.local.LoginDataLocalSource;
+import com.niupule.niuapp.data.source.local.LoginDataRemoteSource;
+import com.niupule.niuapp.data.source.remote.ArticleDataRemoteSource;
+import com.niupule.niuapp.data.source.remote.BannerDataRemoteSource;
 import com.niupule.niuapp.mvp.timeline.article.ArticleFragment;
+import com.niupule.niuapp.mvp.timeline.article.ArticlesPresenter;
 import com.niupule.niuapp.mvp.timeline.favorites.FavoritesFragment;
 import com.niupule.niuapp.mvp.timeline.readlater.ReadLaterFragment;
 
@@ -38,7 +46,7 @@ public class TimeLineFragment extends Fragment {
     private ReadLaterFragment readLaterFragment;
 
 
-    public static TimeLineFragment newInstance(){
+    public static TimeLineFragment newInstance() {
         return new TimeLineFragment();
     }
 
@@ -46,11 +54,11 @@ public class TimeLineFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         FragmentManager manager = getChildFragmentManager();
-        if(savedInstanceState != null){
-            articleFragment = (ArticleFragment) manager.getFragment(savedInstanceState,ArticleFragment.class.getSimpleName());
-            favoritesFragment = (FavoritesFragment) manager.getFragment(savedInstanceState,FavoritesFragment.class.getSimpleName());
-            readLaterFragment = (ReadLaterFragment) manager.getFragment(savedInstanceState,ReadLaterFragment.class.getSimpleName());
-        }else {
+        if (savedInstanceState != null) {
+            articleFragment = (ArticleFragment) manager.getFragment(savedInstanceState, ArticleFragment.class.getSimpleName());
+            favoritesFragment = (FavoritesFragment) manager.getFragment(savedInstanceState, FavoritesFragment.class.getSimpleName());
+            readLaterFragment = (ReadLaterFragment) manager.getFragment(savedInstanceState, ReadLaterFragment.class.getSimpleName());
+        } else {
             articleFragment = ArticleFragment.newInstance();
             favoritesFragment = FavoritesFragment.newInstance();
             readLaterFragment = ReadLaterFragment.newInstance();
@@ -60,22 +68,26 @@ public class TimeLineFragment extends Fragment {
         fragments.add(favoritesFragment);
         fragments.add(readLaterFragment);
 
-
+        new ArticlesPresenter(
+                ArticleDataRepository.getInstance(ArticleDataRemoteSource.getInstance()),
+                BannerDataRepository.getInstance(BannerDataRemoteSource.getInstance()),
+                LoginDataRepository.getInstance(LoginDataRemoteSource.getInstance(), LoginDataLocalSource.getInstance()),
+                articleFragment);
 
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_timeline,container,false);
+        View root = inflater.inflate(R.layout.fragment_timeline, container, false);
         initView(root);
         return root;
     }
 
-    protected void initView(View root){
+    protected void initView(View root) {
         timeline_tablayout = root.findViewById(R.id.tab_layout);
         timeline_viewpager = root.findViewById(R.id.view_pager);
-        timeline_viewpager.setAdapter(new TimeLinePagerAdapter(getChildFragmentManager(),getContext(),fragments));
+        timeline_viewpager.setAdapter(new TimeLinePagerAdapter(getChildFragmentManager(), getContext(), fragments));
         timeline_viewpager.setOffscreenPageLimit(3);
         timeline_tablayout.setupWithViewPager(timeline_viewpager);
     }
@@ -84,14 +96,14 @@ public class TimeLineFragment extends Fragment {
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         FragmentManager manager = getChildFragmentManager();
-        if(articleFragment.isAdded()){
-            manager.putFragment(outState,ArticleFragment.class.getSimpleName(),articleFragment);
+        if (articleFragment.isAdded()) {
+            manager.putFragment(outState, ArticleFragment.class.getSimpleName(), articleFragment);
         }
-        if (favoritesFragment.isAdded()){
-            manager.putFragment(outState,FavoritesFragment.class.getSimpleName(),favoritesFragment);
+        if (favoritesFragment.isAdded()) {
+            manager.putFragment(outState, FavoritesFragment.class.getSimpleName(), favoritesFragment);
         }
-        if (readLaterFragment.isAdded()){
-            manager.putFragment(outState,ReadLaterFragment.class.getSimpleName(),readLaterFragment);
+        if (readLaterFragment.isAdded()) {
+            manager.putFragment(outState, ReadLaterFragment.class.getSimpleName(), readLaterFragment);
         }
     }
 }
