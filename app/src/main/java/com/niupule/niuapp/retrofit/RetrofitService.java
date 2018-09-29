@@ -3,6 +3,7 @@ package com.niupule.niuapp.retrofit;
 import com.niupule.niuapp.data.detail.ArticleData;
 import com.niupule.niuapp.data.detail.BannerData;
 import com.niupule.niuapp.data.detail.BannerDetailData;
+import com.niupule.niuapp.data.detail.FavoriteArticleData;
 import com.niupule.niuapp.data.detail.HotKeyDetailData;
 import com.niupule.niuapp.data.detail.HotKeysData;
 import com.niupule.niuapp.data.detail.LoginData;
@@ -46,5 +47,8 @@ public interface RetrofitService {
 
     @GET(Api.BANNER)
     Observable<BannerData> getBanner();
+
+    @GET(Api.GET_FAVORITE_ARTICLES + "{page}/json")
+    Observable<FavoriteArticleData> getFavoriteArticles(@Path("page") int page);
 
 }

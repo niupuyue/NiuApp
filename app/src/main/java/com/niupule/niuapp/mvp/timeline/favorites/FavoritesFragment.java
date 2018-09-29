@@ -1,5 +1,6 @@
 package com.niupule.niuapp.mvp.timeline.favorites;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -16,7 +17,11 @@ import android.widget.Toast;
 
 import com.niupule.niuapp.R;
 import com.niupule.niuapp.data.detail.ArticleDetailData;
+import com.niupule.niuapp.data.detail.FavoriteArticleDetailData;
+import com.niupule.niuapp.interfaze.OnCategoryOnClickListener;
+import com.niupule.niuapp.interfaze.OnRecycleViewItemClick;
 import com.niupule.niuapp.mvp.adapter.FavoritesAdapter;
+import com.niupule.niuapp.mvp.detail.DetailActivity;
 import com.niupule.niuapp.util.NetworkUtil;
 import com.niupule.niuapp.util.SharedUtil;
 
@@ -123,8 +128,37 @@ public class FavoritesFragment extends Fragment implements FavoritesContract.Fav
     }
 
     @Override
-    public void showFavoritesArticles(List<ArticleDetailData> list) {
-
+    public void showFavoritesArticles(final List<FavoriteArticleDetailData> list) {
+        if (list.isEmpty()){
+            showEmptyView(true);
+            return;
+        }
+        showEmptyView(false);
+        if (adapter != null){
+            adapter.updateData(list);
+        }else {
+            adapter = new FavoritesAdapter(getContext(),list);
+            adapter.setCategoryListener(new OnCategoryOnClickListener() {
+                @Override
+                public void onItemClick(View view, int position) {
+                    //跳转到分类页面
+                }
+            });
+            adapter.setItemClickListener(new OnRecycleViewItemClick() {
+                @Override
+                public void onItemClick(View view, int position) {
+                    Intent intent = new Intent(getContext(), DetailActivity.class);
+                    FavoriteArticleDetailData data = list.get(position);
+                    intent.putExtra(DetailActivity.URL, data.getLink());
+                    intent.putExtra(DetailActivity.TITLE, data.getTitle());
+                    intent.putExtra(DetailActivity.ID, data.getOriginId());
+                    intent.putExtra(DetailActivity.FROM_FAVORITE_FRAGMENT, true);
+                    intent.putExtra(DetailActivity.FROM_BANNER, false);
+                    startActivity(intent);
+                }
+            });
+            recyclerView.setAdapter(adapter);
+        }
     }
 
     @Override
@@ -139,8 +173,13 @@ public class FavoritesFragment extends Fragment implements FavoritesContract.Fav
     }
 
     @Override
-    public void setLoadingIndicator(boolean isActive) {
-
+    public void setLoadingIndicator(final boolean isActive) {
+        swipeRefreshLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                swipeRefreshLayout.setRefreshing(isActive);
+            }
+        });
     }
 
     @Override

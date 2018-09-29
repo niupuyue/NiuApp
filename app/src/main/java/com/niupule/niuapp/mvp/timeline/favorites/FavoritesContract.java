@@ -1,6 +1,7 @@
 package com.niupule.niuapp.mvp.timeline.favorites;
 
 import com.niupule.niuapp.data.detail.ArticleDetailData;
+import com.niupule.niuapp.data.detail.FavoriteArticleDetailData;
 import com.niupule.niuapp.mvp.BasePresenter;
 import com.niupule.niuapp.mvp.BaseView;
 
@@ -20,7 +21,7 @@ public interface FavoritesContract {
     }
 
     interface FavoritesView extends BaseView<FavoritesPresenter>{
-        void showFavoritesArticles(List<ArticleDetailData> list);
+        void showFavoritesArticles(List<FavoriteArticleDetailData> list);
 
         boolean isActive();
 

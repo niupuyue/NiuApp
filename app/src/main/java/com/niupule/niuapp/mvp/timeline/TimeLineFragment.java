@@ -14,14 +14,19 @@ import android.view.ViewGroup;
 import com.niupule.niuapp.R;
 import com.niupule.niuapp.data.source.ArticleDataRepository;
 import com.niupule.niuapp.data.source.BannerDataRepository;
+import com.niupule.niuapp.data.source.FavoriteArticlesDataRespository;
+import com.niupule.niuapp.data.source.FavoriteArticlesDataSource;
 import com.niupule.niuapp.data.source.LoginDataRepository;
+import com.niupule.niuapp.data.source.local.FavortiesDataLocalSource;
 import com.niupule.niuapp.data.source.local.LoginDataLocalSource;
 import com.niupule.niuapp.data.source.local.LoginDataRemoteSource;
 import com.niupule.niuapp.data.source.remote.ArticleDataRemoteSource;
 import com.niupule.niuapp.data.source.remote.BannerDataRemoteSource;
+import com.niupule.niuapp.data.source.remote.FavortitesDataRemoteSource;
 import com.niupule.niuapp.mvp.timeline.article.ArticleFragment;
 import com.niupule.niuapp.mvp.timeline.article.ArticlesPresenter;
 import com.niupule.niuapp.mvp.timeline.favorites.FavoritesFragment;
+import com.niupule.niuapp.mvp.timeline.favorites.FavoritesPresenter;
 import com.niupule.niuapp.mvp.timeline.readlater.ReadLaterFragment;
 
 import java.util.ArrayList;
@@ -73,6 +78,10 @@ public class TimeLineFragment extends Fragment {
                 BannerDataRepository.getInstance(BannerDataRemoteSource.getInstance()),
                 LoginDataRepository.getInstance(LoginDataRemoteSource.getInstance(), LoginDataLocalSource.getInstance()),
                 articleFragment);
+
+        new FavoritesPresenter(favoritesFragment,
+                FavoriteArticlesDataRespository.getInstance(FavortitesDataRemoteSource.getInstance(),
+                        FavortiesDataLocalSource.getInstance()));
 
     }
 

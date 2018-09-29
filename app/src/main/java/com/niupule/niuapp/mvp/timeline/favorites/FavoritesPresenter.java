@@ -1,8 +1,15 @@
 package com.niupule.niuapp.mvp.timeline.favorites;
 
+import com.niupule.niuapp.data.detail.FavoriteArticleDetailData;
 import com.niupule.niuapp.data.source.FavoriteArticlesDataRespository;
 
+import java.util.List;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.observers.DisposableObserver;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Coder: niupuyue (牛谱乐)
@@ -28,7 +35,33 @@ public class FavoritesPresenter implements FavoritesContract.FavoritesPresenter 
 
     @Override
     public void getFavoritesArticles(int page, boolean forceUpdate, boolean clearCache) {
+        Disposable disposable = respository.getFavoriteArticles(page,forceUpdate,clearCache)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableObserver<List<FavoriteArticleDetailData>>(){
 
+                    @Override
+                    public void onNext(List<FavoriteArticleDetailData> value) {
+                        if (view.isActive()){
+                            view.showFavoritesArticles(value);
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        if (view.isActive()){
+                            view.showEmptyView(true);
+                        }
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        if (view.isActive()){
+                            view.setLoadingIndicator(false);
+                        }
+                    }
+                });
+        compositeDisposable.add(disposable);
     }
 
     @Override
@@ -38,6 +71,6 @@ public class FavoritesPresenter implements FavoritesContract.FavoritesPresenter 
 
     @Override
     public void unsubscribe() {
-
+        compositeDisposable.clear();
     }
 }
